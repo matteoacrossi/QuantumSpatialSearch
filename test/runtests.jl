@@ -1,4 +1,4 @@
-using QuantumSatialSearch
+using QuantumSpatialSearch
 using LinearAlgebra, SparseArrays
 using Test
 
