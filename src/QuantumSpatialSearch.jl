@@ -3,7 +3,7 @@ module QuantumSpatialSearch
     using SparseArrays
     using LinearAlgebra
 
-    export spatialsearch
+    export spatialsearch, generateRTN
 
     const jumpProb = 0.05;   #jump probability in a timestep
 
