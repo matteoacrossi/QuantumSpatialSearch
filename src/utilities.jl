@@ -1,6 +1,6 @@
 
 """
-    M(time, mu, timesteps)
+    internal_M(time, mu, timesteps)
 
 Return `(numberOfSteps, kout)` where `numberOfSteps` is the required number of
 internal simulation steps so that the probability of having a noise jump in a
@@ -9,7 +9,7 @@ between timesteps with output.
 
 `timesteps` = number of output steps.
 """
-function M(time, mu, timesteps)
+function internal_M(time, mu, timesteps)
     temp=convert(Int64,cld(time,jumpProb/mu )+1) # minimum number of internal steps
 
     if time/(temp-1)>0.1
@@ -33,7 +33,7 @@ function M(time, mu, timesteps)
 end
 
 
-dt(time,mu,timesteps)=time/(M(time,mu,timesteps)[1]-1) # unit of time given the number of internal steps
+internal_dt(time,mu,timesteps)=time/(internal_M(time,mu,timesteps)[1]-1) # unit of time given the number of internal steps
 
 
 rescaledMu(time,mu,timesteps)=dt(time,mu,timesteps)*mu

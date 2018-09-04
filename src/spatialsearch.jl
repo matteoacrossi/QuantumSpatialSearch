@@ -72,10 +72,10 @@ include("apply_dyson.jl")
 
         # We evaluate the number of internal steps required so that the noise is
         # sampled correctly. kout is the number of output timesteps t
-        (Mtot, kout) = M(time, mu, output_timesteps)
+        (Mtot, kout) = internal_M(time, mu, output_timesteps)
 
         # every internal step has a length = dt
-        dtev = dt(time, mu, output_timesteps)
+        dtev = internal_dt(time, mu, output_timesteps)
 
         Ad = Adjacency(N)  # We define the whole adjacency matrix
 
@@ -111,7 +111,7 @@ include("apply_dyson.jl")
 
                 copyto!(kq, psi)
 
-                dyson_evolution!(H, psi, dt, dysonOrder)
+                dyson_evolution!(H, psi, dtev, dysonOrder)
 
                 psi ./= norm(psi)     # state psi at time=t
 

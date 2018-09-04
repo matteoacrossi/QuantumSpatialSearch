@@ -15,6 +15,7 @@ spatialsearch(psi0, star_graph_Ad;
                     noiseStrength=1.,
                     noiseRealizations=2,
                     dysonOrder=4);
+
 println("Running benchmark")
 res = @benchmark spatialsearch(psi0, star_graph_Ad;
                     maxdt=maxdt, # maximum allowed time for dt

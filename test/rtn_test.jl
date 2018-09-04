@@ -23,38 +23,6 @@ function autocorrelation(noisefunction, time, mu, dt)
     return (tvec, autoC)
 end
 
-function switchesAutoC(time, mu, timesteps)   # autocorrelation function of RTNgenSwitches
-
-    time = range(0., stop=time, length=timesteps)
-    temp = RTNgenSwitches(time, mu, 1)[:, 1]
-
-    tc = 4. / mu
-    dtt = Float64(time.step)
-    lags = [x for x = 0:(Int(fld(tc, dtt))-1)]
-    autoC = autocov(temp, lags)
-
-    tvec = range(0., stop=tc, length=Int(fld(tc,dtt)))   # output "true" time from 0. to tc, split in the number of lags
-
-    return (tvec,autoC)
-end
-
-function timeAutoC(time,mu,timesteps)       # autocorrelation function of RTNgenTime
-
-    Mtot = M(time,mu,timesteps)[1]
-
-    temp = RTNgenTime(time,mu,timesteps,1)[:,1]
-
-    tc = 4. / mu
-    dtt = time/Mtot   # time unit
-    lags = [x for x=0:(Int(fld(tc,dtt))-1)]
-
-    autoC = autocov(temp,lags)
-
-    tvec = linspace(0., tc, Int(fld(tc,dtt)))   # output "true" time from 0. to tc, split in the number of lags
-
-    return (tvec,autoC)
-end
-
 function spectrum(t, signal)
     n = length(signal)
     p = fft(signal)
