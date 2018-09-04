@@ -1,4 +1,4 @@
-
+using Distributed
 using Test
 
 @testset "Noiseless" begin
@@ -63,6 +63,32 @@ using Test
 end
 
 @testset "Noisy" begin
+    N = 10
+    maxdt = 0.01
+    psi0 = 1/sqrt(N) * ones(ComplexF64, N)
+    @testset "Star graph" begin
+        @testset "Central target" begin
+            res = spatialsearch(psi0, star_graph_Ad;
+                        maxdt=maxdt, # maximum allowed time for dt
+                        gamma=1. / N,
+                        posW=1,
+                        time=2*sqrt(N),
+                        mu=0.01,
+                        coupling=1.,
+                        noiseStrength=1.,
+                        noiseRealizations=1000,
+                        dysonOrder=4);
+
+            @test res[1] >= zero(res[1]) # Positive probability
+            @test res[3] ≈ 0.5 atol = 5e-2
+        end
+    end
+end
+
+
+@testset "Distributed" begin
+    addprocs(2)
+    @everywhere using QuantumSpatialSearch
     N = 10
     maxdt = 0.01
     psi0 = 1/sqrt(N) * ones(ComplexF64, N)
