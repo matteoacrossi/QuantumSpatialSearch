@@ -88,28 +88,27 @@ include("apply_noise.jl")
 
         # Contains the output
         probArray = zeros(Mtot)
-
-        probArray = @distributed (+) for n = 1 : noiseRealizations
-
+        #probArray = @distributed (+) for n = 1 : noiseRealizations
+        for n = 1 : noiseRealizations
             # array containing the probability of getting the required state |posW>
             # if we measure the evoluted state, at each internal timestep t
             tmp = zeros(Float64, Mtot)
             tmp[1] = abs2(psi0[posW]) / noiseRealizations
 
             psi = copy(psi0)  #psi0 is the initial state (array of complex floats)
-
+            kq = similar(psi)
             # This is the noise array generated for each indipedent link.
             # It's a Mtot x NumberOfIndipendentLinks matrix.
             temparray = - gamma * (coupling .+
                         noiseStrength .* generateRTN(tvec, mu, link_number))
 
             for t = 2 : Mtot    # evolution over time
-                apply_noise!(H, Ad, temparray[t-1,:])
+                apply_noise!(H, Ad, view(temparray, t-1, :))
 
                 # we subtract the oracle Hamiltonian from the noisy Laplacian
                 H[posW, posW] -= 1.
 
-                kq = copy(psi)
+                copyto!(kq, psi)
 
                 # evolution (dysonOrder is the maximum order of dt)
                 for k = 1 : dysonOrder
@@ -124,7 +123,7 @@ include("apply_noise.jl")
 
             end  # end of loop over time
 
-            tmp # The parallel-for reduction sums this value to probArray
+            probArray += tmp # The parallel-for reduction sums this value to probArray
         end  # end of loop over noise realizations
 
         # we find the maximum and its position in the probability array

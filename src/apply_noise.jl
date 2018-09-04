@@ -1,4 +1,4 @@
-function apply_noise!(H::SparseMatrixCSC, Ad::SparseMatrixCSC, noisearray::Vector)
+function apply_noise!(H::SparseMatrixCSC, Ad::SparseMatrixCSC, noisearray)
 
 # counter telling which of the indipendent links we are considering
     counter = 1
