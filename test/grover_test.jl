@@ -73,15 +73,15 @@ end
                         gamma=1. / N,
                         posW=1,
                         time=2*sqrt(N),
-                        mu=1.,
+                        mu=0.01,
                         coupling=1.,
                         noiseStrength=1.,
-                        noiseRealizations=100,
+                        noiseRealizations=1000,
                         dysonOrder=4);
 
 
             @test res[1] >= zero(res[1]) # Positive probability
-            @test res[3] < 1.
+            @test res[3] ≈ 0.49 atol=1e-2
         end
     end
 end
