@@ -81,7 +81,7 @@ end
 
 
             @test res[1] >= zero(res[1]) # Positive probability
-            @test res[3] ≈ 0.49 atol=1e-2
+            @test res[3] ≈ 0.5 atol = 5e-2
         end
     end
 end
