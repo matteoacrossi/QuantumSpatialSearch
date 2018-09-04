@@ -7,7 +7,7 @@ module QuantumSpatialSearch
     using LinearAlgebra
     using Distributed
 
-    export spatialsearch, generateRTN
+    export spatialsearch, generateRTN, superposition_state
 
     const jumpProb = 0.05;   #jump probability in a timestep
 
