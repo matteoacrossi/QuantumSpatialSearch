@@ -1,4 +1,5 @@
 include("apply_noise.jl")
+include("apply_dyson.jl")
 
     """
         (probArray, t, p_max, t_opt) = spatialsearch(psi0, Adjacency; kwargs...)
@@ -110,11 +111,7 @@ include("apply_noise.jl")
 
                 copyto!(kq, psi)
 
-                # evolution (dysonOrder is the maximum order of dt)
-                for k = 1 : dysonOrder
-                    kq = - 1im * dtev/k * H * kq
-                    psi += kq
-                end
+                dyson_evolution!(H, psi, dt, dysonOrder)
 
                 psi ./= norm(psi)     # state psi at time=t
 
