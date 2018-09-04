@@ -1,3 +1,5 @@
+include("apply_noise.jl")
+
     """
         (probArray, t, p_max, t_opt) = spatialsearch(psi0, Adjacency; kwargs...)
 
@@ -33,10 +35,12 @@
     # Examples
 
     In this example we run the noiseless spatial search on a complete graph with
-    `N = 4` and we check that `p_max = 1` and `t_opt = 1` (up to error due to `dt`)
+    `N = 4` and we check that `p_max = 1` and `t_opt = 1` (up to error due to
+    `dt`)
 
     ```jldoctest
-    julia> (probArray, t, p_max, t_opt) = spatialsearch(superposition_state(4), complete_graph_Ad; time=5, gamma = 1. / 4, maxdt = .001)
+    julia> (probArray, t, p_max, t_opt) = spatialsearch(superposition_state(4),
+    complete_graph_Ad; time=5, gamma = 1. / 4, maxdt = .001)
 
     julia> isapprox(p_max, 1, atol=1e-6)
     true
@@ -57,7 +61,8 @@
                         dysonOrder::Integer=4)
 
         # maxdt = maximum value of dt of the evolution.
-        # posW = position of the state we want to find in the basis of the nodes of the graph (position in the state array). Usually we set         #        posW=1.
+        # posW = position of the state we want to find in the basis of the nodes
+        # of the graph (position in the state array).
 
         N = length(psi0)   # N (dimension of the lattice)
 
@@ -72,12 +77,16 @@
         dtev = dt(time, mu, output_timesteps)
 
         Ad = Adjacency(N)  # We define the whole adjacency matrix
-        H = discLapl(Ad)   # We obtain the Hamiltonian (discrete Laplacian) from the adjacency matrix
 
-        # The number of links is the number of elements in the upper (lower) triangular adjacency matrix.
+        # We obtain the Hamiltonian (Laplacian matrix) from the adjacency matrix
+        H = discLapl(Ad)
+
+        # The number of links is the number of nonzero elements in the upper
+        # triangular adjacency matrix.
         link_number = Int(length(Ad.nzval) / 2)
         tvec = range(0., stop=time, length=Mtot)
 
+        # Contains the output
         probArray = zeros(Mtot)
 
         for n = 1 : noiseRealizations
@@ -91,56 +100,19 @@
 
             # This is the noise array generated for each indipedent link.
             # It's a Mtot x NumberOfIndipendentLinks matrix.
-            temparray = generateRTN(tvec, mu, link_number)
+            temparray = - gamma * (coupling .+
+                        noiseStrength .* generateRTN(tvec, mu, link_number))
 
             for t = 2 : Mtot    # evolution over time
+                apply_noise!(H, Ad, temparray[t-1,:])
 
-                # counter telling which of the indipendent links we are considering
-                counter = 1
-
-                for i = 1 : Int(sqrt(length(H)))
-
-                    # this will be the value of the diagonal element [i,i],
-                    # which depends on the noise on each
-                    # link starting from the considered node i.
-                    diagNoisyValue = 0.
-
-                    # We perturb the laplacian matrix of the graph with the noise
-                    # We do this at low level by acting on the sparse matrix
-                    # representation
-
-                    # elements of the row vector indicating which rows
-                    # are occupied in column i
-                    for j = Ad.colptr[i] : (Ad.colptr[i + 1] - 1)
-
-                        # We insert "new" noise only in the lower triangular part
-                        # of the Hamiltonian matrix
-                        if i < Ad.rowval[j]
-
-                            H[Ad.rowval[j], i] = - gamma * (coupling +
-                                        noiseStrength .* temparray[t-1, counter])
-                             # We have inserted noise in one of the indipedent links
-                             counter+=1
-
-                        elseif i > Ad.rowval[j]
-                            H[Ad.rowval[j], i] = H[i, Ad.rowval[j]]
-                        end
-
-                        diagNoisyValue += -1. * H[Ad.rowval[j],i]
-                    end
-
-                    # the value of the diagonal element of a column (node i) must be = minus the sum of all
-                    # the other values in the column, because of the conservation of the overall probability
-                    # sum_j p(j|i)=1
-                    H[i,i] = diagNoisyValue
-
-                end
-
-                H[posW, posW] -= 1.  # we subtract the oracle Hamiltonian from the noisy Laplacian
+                # we subtract the oracle Hamiltonian from the noisy Laplacian
+                H[posW, posW] -= 1.
 
                 kq = copy(psi)
 
-                for k = 1 : dysonOrder      # evolution (dysonOrder is the maximum order of dt)
+                # evolution (dysonOrder is the maximum order of dt)
+                for k = 1 : dysonOrder
                     kq = - 1im * dtev/k * H * kq
                     psi += kq
                 end
@@ -157,6 +129,5 @@
         # we find the maximum and its position in the probability array
         (max, position) = findmax(probArray)
 
-        # we return (in order) the probability array, the array of time, the maximum probability and the time at which we get the maximum
         return  (probArray, tvec, max, (position - 1) * dtev)
     end
