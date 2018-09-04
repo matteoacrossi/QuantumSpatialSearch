@@ -19,9 +19,9 @@ using Test
                     noiseRealizations=1,
                     dysonOrder=4);
 
-        @test res[1] >= zero(res[1]) # Positive probability
-        @test res[3] ≈ 1 atol = 1e-5 # Maximum is 1
-        @test res[4] ≈ pi*sqrt(N)/2  atol = maxdt # For the correct time
+        @test res.p >= zero(res.p) # Positive probability
+        @test res.pmax ≈ 1 atol = 1e-5 # Maximum is 1
+        @test res.tmax ≈ pi*sqrt(N)/2  atol = maxdt # For the correct time
 
     end
 
@@ -38,9 +38,9 @@ using Test
                         noiseRealizations=1,
                         dysonOrder=4);
 
-            @test res[1] >= zero(res[1]) # Positive probability
-            @test res[3] ≈ 1 atol = 1e-5
-            @test res[4] ≈ pi*sqrt(N)/2 atol = maxdt
+            @test res.p >= zero(res.p) # Positive probability
+            @test res.pmax ≈ 1 atol = 1e-5
+            @test res.tmax ≈ pi*sqrt(N)/2 atol = maxdt
         end
 
         @testset "External target" begin
@@ -55,9 +55,9 @@ using Test
                         noiseRealizations=1,
                         dysonOrder=4);
 
-            @test res[1] >= zero(res[1]) # Positive probability
-            @test res[3] ≈ 1  atol = 1 / N^2
-            @test res[4] ≈ pi*sqrt(N)/2  atol = maxdt
+            @test res.p >= zero(res.p) # Positive probability
+            @test res.pmax ≈ 1  atol = 1 / N^2
+            @test res.tmax ≈ pi*sqrt(N)/2  atol = maxdt
         end
     end
 end
@@ -79,8 +79,8 @@ end
                         noiseRealizations=1000,
                         dysonOrder=4);
 
-            @test res[1] >= zero(res[1]) # Positive probability
-            @test res[3] ≈ 0.5 atol = 5e-2
+            @test res.p >= zero(res.p) # Positive probability
+            @test res.pmax ≈ 0.5 atol = 5e-2
         end
     end
 end
@@ -105,8 +105,8 @@ end
                         noiseRealizations=1000,
                         dysonOrder=4);
 
-            @test res[1] >= zero(res[1]) # Positive probability
-            @test res[3] ≈ 0.5 atol = 5e-2
+            @test res.p >= zero(res.p) # Positive probability
+            @test res.pmax ≈ 0.5 atol = 5e-2
         end
     end
 end

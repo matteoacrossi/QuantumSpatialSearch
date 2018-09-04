@@ -2,16 +2,16 @@ include("apply_noise.jl")
 include("apply_dyson.jl")
 
     """
-        (probArray, t, p_max, t_opt) = spatialsearch(psi0, Adjacency; kwargs...)
+        (p, t, pmax, tmax) = spatialsearch(psi0, Adjacency; kwargs...)
 
     Evaluate a (noisy) spatial search run on the graph described by the adjacency
-    matrix Adjacency, starting from an initial state `psi0`. Return a tuple
+    matrix Adjacency, starting from an initial state `psi0`. Return a `NamedTuple`
     consisting of
-    - `probArray`: the probability of finding the walker in the target node as a
+    - `p`: the probability of finding the walker in the target node as a
     f unction of `t`
     - `t`: the time instants at which probArray is evaluated
-    - `p_max`: the maximum probability
-    - `t_opt`: the optimal time at which `p_max` is reached for the first time
+    - `pmax`: the maximum probability
+    - `tmax`: the optimal time at which `pmax` is reached for the first time
 
     This function implements the spatial search as devised by Childs & Goldstone,
     Phys. Rev. A 70, 22314 (2004), with the addition of RTN noise as described in
@@ -131,5 +131,5 @@ include("apply_dyson.jl")
         # we find the maximum and its position in the probability array
         (max, position) = findmax(probArray)
 
-        return  (probArray, tvec, max, (position - 1) * dtev)
+        return  (p=probArray, t=tvec, pmax=max, tmax=(position - 1) * dtev)
     end
