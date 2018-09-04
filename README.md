@@ -6,7 +6,7 @@ This Julia 1.0 package is used to obtain the numerical results of the manuscript
 # Installation
 You can install the package using the Pkg-REPL, which is entered from the Julia REPL using the key `]`.
 
-```julia
+```sh
 (v1.0) pkg> add https://github.com/matteoacrossi/QuantumSpatialSearch.git
 ```
 
