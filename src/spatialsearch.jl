@@ -98,7 +98,7 @@ include("apply_dyson.jl")
             tmp[1] = abs2(psi0[posW]) / noiseRealizations
 
             psi = copy(psi0)  #psi0 is the initial state (array of complex floats)
-            #kq = similar(psi)
+
             # This is the noise array generated for each indipedent link.
             # It's a Mtot x NumberOfIndipendentLinks matrix.
             temparray = - gamma * (coupling .+
@@ -110,13 +110,6 @@ include("apply_dyson.jl")
                 # we subtract the oracle Hamiltonian from the noisy Laplacian
                 H[posW, posW] -= 1.
 
-                #copyto!(kq, psi)
-
-                # evolution (dysonOrder is the maximum order of dt)
-                # for k = 1 : dysonOrder
-                #     kq = - 1im * dtev/k * H * kq
-                #     psi += kq
-                # end
                 apply_dyson!(H, psi, dtev, dysonOrder)
 
                 psi ./= norm(psi)     # state psi at time=t
