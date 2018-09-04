@@ -89,7 +89,7 @@ include("apply_noise.jl")
         # Contains the output
         probArray = zeros(Mtot)
 
-        for n = 1 : noiseRealizations
+        probArray = @distributed (+) for n = 1 : noiseRealizations
 
             # array containing the probability of getting the required state |posW>
             # if we measure the evoluted state, at each internal timestep t
@@ -123,7 +123,8 @@ include("apply_noise.jl")
                 tmp[t] = abs2(psi[posW]) ./ noiseRealizations
 
             end  # end of loop over time
-            probArray += tmp # The parallel-for reduction sums this value to probArray
+
+            tmp # The parallel-for reduction sums this value to probArray
         end  # end of loop over noise realizations
 
         # we find the maximum and its position in the probability array

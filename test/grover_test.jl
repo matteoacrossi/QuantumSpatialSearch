@@ -79,7 +79,6 @@ end
                         noiseRealizations=1000,
                         dysonOrder=4);
 
-
             @test res[1] >= zero(res[1]) # Positive probability
             @test res[3] ≈ 0.5 atol = 5e-2
         end
