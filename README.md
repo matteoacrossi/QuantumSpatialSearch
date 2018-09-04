@@ -10,6 +10,11 @@ You can install the package using the Pkg-REPL, which is entered from the Julia 
 (v1.0) pkg> add https://github.com/matteoacrossi/QuantumSpatialSearch.git
 ```
 
+You can then test that everything works as expected
+```sh
+(v1.0) pkg> test QuantumSpatialSearch
+```
+
 # Usage
 The main function is `spatialsearch`
 
