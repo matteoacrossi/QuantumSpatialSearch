@@ -1,7 +1,7 @@
 # QuantumSpatialSearch
-This Julia 1.0 package was used to obtain the numerical results of the manuscript Cattaneo, Rossi, Paris, Maniscalco, *Quantum spatial search on graphs with dynamical noise*.
+`QuantumSpatialSearch` simulates a spatial search algorithm using a continuous time quantum walk (CTQW) on an arbitrary graph, described by its adjacency matrix. It also simulates the effects of dynamic random telegraph noise (RTN) affecting the links of the graph, by Montecarlo-sampling the noise and averaging the quantum trajectory.
 
-It simulates a spatial search algorithm using a continuous time quantum walk (CTQW) on an arbitrary graph, described by its adjacency matrix. It also simulates the effects of dynamic random telegraph noise (RTN) affecting the links of the graph, by Montecarlo-sampling the noise and averaging the quantum trajectory.
+This Julia 1.0 package is used to obtain the numerical results of the manuscript Cattaneo, Rossi, Paris, Maniscalco, *Quantum spatial search on graphs with dynamical noise*.
 
 # Installation
 You can install the package using the Pkg-REPL, which is entered from the Julia REPL using the key `]`.
@@ -93,5 +93,5 @@ plot(noisy[1].t, [n.p for n in noisy],
 plot!(noiseless.t, noiseless.p, c=:black, label="Noiseless")
 ```
 
-Result:
+## Result
 ![Result](example.png)
