@@ -111,7 +111,11 @@ include("apply_dyson.jl")
 
                 copyto!(kq, psi)
 
-                dyson_evolution!(H, psi, dtev, dysonOrder)
+                # evolution (dysonOrder is the maximum order of dt)
+                for k = 1 : dysonOrder
+                    kq = - 1im * dtev/k * H * kq
+                    psi += kq
+                end
 
                 psi ./= norm(psi)     # state psi at time=t
 
