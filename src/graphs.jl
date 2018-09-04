@@ -1,5 +1,6 @@
 using SparseArrays
 
+export complete_graph_Ad, star_graph_Ad
 """
     complete_graph_Ad(N)
 
