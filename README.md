@@ -1,6 +1,4 @@
 # QuantumSpatialSearch
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.18914.svg)](http://dx.doi.org/10.5281/zenodo.18914)
-
 [![arXiv](https://img.shields.io/badge/arXiv-1809.01969-red.svg)](http://arxiv.org/abs/1809.01969) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1410139.svg)](http://dx.doi.org/10.5281/zenodo.1410139)
 
 `QuantumSpatialSearch` simulates a spatial search algorithm using a continuous time quantum walk (CTQW) on an arbitrary graph, described by its adjacency matrix. It also simulates the effects of dynamic random telegraph noise (RTN) affecting the links of the graph, by Montecarlo-sampling the noise and averaging the quantum trajectory.
