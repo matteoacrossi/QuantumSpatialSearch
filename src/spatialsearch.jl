@@ -29,8 +29,8 @@ include("apply_dyson.jl")
     - `posW::Integer = 1`: Position of the target node
     - `time::Real = 1.`: Final time
     - `mu::Real = 1.`: Switching rate μ of the noise
-    - `noiseStrength::Real = 1.`: Coupling ν to the noise (noise stregth)
-    - `noiseRealizations::Integer = 0`: Number of Montecarlo noise realizations
+    - `noiseStrength::Real = 0.`: Coupling ν to the noise (noise stregth)
+    - `noiseRealizations::Integer = 1`: Number of Montecarlo noise realizations
     - `dysonOrder::Integer = 4`: Order of the Dyson series expansion
 
     # Examples
